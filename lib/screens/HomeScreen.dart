@@ -88,11 +88,11 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                     ),
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: Stack(
-                                    children: [
-                                      Text(
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(
                                         '${((snapshot.data!.main?.temp)! - 273.15).toStringAsFixed(0)}°c',
                                         style: TextStyle(
                                           color: Colors.white,
@@ -100,8 +100,31 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(
+                                      width: 70,
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'H: ${((snapshot.data!.main?.humidity)!).toStringAsFixed(0)}%',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontFamily: "Airbnb"),
+                                          ),
+                                          Text(
+                                            'P: ${((snapshot.data!.main?.pressure)! - 273.15).toStringAsFixed(0)}mBar',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontFamily: "Airbnb"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 15.0),
