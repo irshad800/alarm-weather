@@ -9,10 +9,16 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+    <!-- Required for notifications -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:label="weather_app"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
+        <!-- Your activity configurations -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -33,6 +39,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <!-- Query for processing text -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

@@ -1,13 +1,14 @@
 import 'package:alarm/alarm.dart';
-import 'package:alrmwhther/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/alarm_provider.dart';
+import 'screens/HomeScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Alarm.init();
+
   runApp(MyApp());
 }
 
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _pages[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.black,
         currentIndex: _currentIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,

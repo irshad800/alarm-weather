@@ -16,7 +16,7 @@ class AlarmScreen extends StatefulWidget {
 class _AlarmScreenState extends State<AlarmScreen> {
   double? _lat;
   double? _longt;
-  late Future<WeatherDataa> _weatherDataFuture;
+  Future<WeatherDataa>? _weatherDataFuture;
 
   @override
   void initState() {
@@ -42,6 +42,15 @@ class _AlarmScreenState extends State<AlarmScreen> {
     final alarmProvider = Provider.of<AlarmProvider>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Center(
+          child: Text(
+            "alarm",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -52,190 +61,171 @@ class _AlarmScreenState extends State<AlarmScreen> {
         ),
         child: Column(
           children: [
-            Expanded(
-              child: FutureBuilder<WeatherDataa>(
-                future: _weatherDataFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (snapshot.hasData) {
-                    var weatherData = snapshot.data;
-                    return SafeArea(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
+            _weatherDataFuture != null
+                ? Expanded(
+                    child: FutureBuilder<WeatherDataa>(
+                      future: _weatherDataFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (snapshot.hasData) {
+                          var weatherData = snapshot.data;
+                          return SafeArea(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                      '${snapshot.data!.name}',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: Text(
-                                        '${((snapshot.data!.main?.temp)! - 273.15).toStringAsFixed(0)}°c',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 50,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 70,
-                                    ),
-                                    Container(
-                                      child: Column(
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            'H: ${((snapshot.data!.main?.humidity)!).toStringAsFixed(0)}%',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 24,
-                                                fontFamily: "Airbnb"),
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Colors.white,
                                           ),
                                           Text(
-                                            'P: ${((snapshot.data!.main?.pressure)! - 273.15).toStringAsFixed(0)}mBar',
+                                            '${snapshot.data!.name}',
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 24,
-                                                fontFamily: "Airbnb"),
+                                              color: Colors.white,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Text(
-                                    '${snapshot.data?.weather?[0].main.toString()}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                    ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15),
+                                        child: Stack(
+                                          children: [
+                                            Text(
+                                              '${((snapshot.data!.main?.temp)! - 273.15).toStringAsFixed(0)}°c',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 50,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Text(
+                                          '${snapshot.data?.weather?[0].main.toString()}',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              child: Consumer<AlarmProvider>(
-                                builder: (context, alarmProvider, _) =>
-                                    ListView.builder(
-                                  itemCount: alarmProvider.alarms.length,
-                                  itemBuilder: (context, index) {
-                                    final alarm = alarmProvider.alarms[index];
-                                    final enabled =
-                                        alarmProvider.alarmEnabled[index];
-                                    String formattedTime =
-                                        DateFormat('HH:mm').format(alarm);
+                          );
+                        }
+                        return CircularProgressIndicator();
+                      },
+                    ),
+                  )
+                : SizedBox.shrink(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                child: Consumer<AlarmProvider>(
+                  builder: (context, alarmProvider, _) => ListView.builder(
+                    itemCount: alarmProvider.alarms.length,
+                    itemBuilder: (context, index) {
+                      final alarm = alarmProvider.alarms[index];
+                      final enabled = alarmProvider.alarmEnabled[index];
+                      String formattedTime = DateFormat('HH:mm').format(alarm);
 
-                                    return Card(
-                                      color: Colors.white.withOpacity(0.8),
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 16),
-                                      child: ListTile(
-                                        title: Text(
-                                          formattedTime,
-                                          style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        trailing: Switch(
-                                          value: enabled,
-                                          onChanged: (bool value) {
-                                            alarmProvider.toggleAlarmEnabled(
-                                                index, value);
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                      return Card(
+                        color: Colors.white.withOpacity(0.8),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        child: ListTile(
+                          title: Text(
+                            formattedTime,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white.withOpacity(0.9),
-                              radius: 30,
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.add,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () async {
-                                  TimeOfDay? pickedTime = await showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now(),
-                                  );
-
-                                  if (pickedTime != null) {
-                                    DateTime now = DateTime.now();
-                                    DateTime pickedDateTime = DateTime(
-                                      now.year,
-                                      now.month,
-                                      now.day,
-                                      pickedTime.hour,
-                                      pickedTime.minute,
-                                    );
-                                    alarmProvider.addAlarm(pickedDateTime);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.red.withOpacity(0.8),
-                              textStyle: const TextStyle(fontSize: 18),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 24),
-                            ),
-                            onPressed: () {
-                              alarmProvider.stopAllAlarms();
+                          trailing: Switch(
+                            value: enabled,
+                            onChanged: (bool value) {
+                              alarmProvider.toggleAlarmEnabled(index, value);
                             },
-                            child: const Text('Stop All Alarms'),
                           ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-                    );
-                  }
-                  return CircularProgressIndicator();
-                },
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white.withOpacity(0.9),
+                radius: 30,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.add,
+                    color: Colors.black,
+                  ),
+                  onPressed: () async {
+                    TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+
+                    if (pickedTime != null) {
+                      DateTime now = DateTime.now();
+                      DateTime pickedDateTime = DateTime(
+                        now.year,
+                        now.month,
+                        now.day,
+                        pickedTime.hour,
+                        pickedTime.minute,
+                      );
+                      alarmProvider.addAlarm(pickedDateTime);
+                    }
+                  },
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red.withOpacity(0.8),
+                textStyle: const TextStyle(fontSize: 18),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              ),
+              onPressed: () {
+                alarmProvider.stopAllAlarms();
+              },
+              child: const Text('Stop All Alarms'),
+            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
