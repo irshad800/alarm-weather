@@ -40,6 +40,10 @@ dependencies:
   alarm: ^3.1.4
   timezone: ^0.9.4
   intl: ^0.19.0
+  geolocator: ^12.0.0
+  http: ^1.2.1
+  location: ^6.0.2
+  sqflite: ^2.3.3+1
 
 dev_dependencies:
   flutter_test:
