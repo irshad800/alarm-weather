@@ -1,13 +1,19 @@
 import 'package:alarm/alarm.dart';
+import 'package:alrmwhther/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'provider/alarm_provider.dart';
-import 'screens/HomeScreen.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Alarm.init();
+  tz.initializeTimeZones();
 
   runApp(MyApp());
 }
@@ -67,19 +73,31 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.access_alarm),
+            icon: Icon(
+              Icons.access_alarm,
+              color: Colors.black,
+            ),
             label: 'Alarm',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.access_time),
+            icon: Icon(
+              Icons.access_time,
+              color: Colors.black,
+            ),
             label: 'Clock',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.av_timer),
+            icon: Icon(
+              Icons.av_timer,
+              color: Colors.black,
+            ),
             label: 'Stopwatch',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.timer_rounded),
+            icon: Icon(
+              Icons.timer_rounded,
+              color: Colors.black,
+            ),
             label: 'Countdown Timer',
           ),
         ],

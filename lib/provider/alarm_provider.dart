@@ -9,7 +9,7 @@ import '../database/alarm_database.dart';
 
 class AlarmProvider extends ChangeNotifier {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   List<DateTime> _alarms = [];
   List<int> _alarmIds = [];
@@ -27,9 +27,9 @@ class AlarmProvider extends ChangeNotifier {
 
   void _initializeNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('app_icon');
     final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
+        InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -96,16 +96,17 @@ class AlarmProvider extends ChangeNotifier {
     final tz.TZDateTime scheduledDate = tz.TZDateTime.from(dateTime, tz.local);
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'alarm_channel',
       'Alarm Notifications',
+      '',
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
     );
 
     const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
     flutterLocalNotificationsPlugin.zonedSchedule(
       alarmId,
@@ -115,7 +116,7 @@ class AlarmProvider extends ChangeNotifier {
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }

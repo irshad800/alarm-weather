@@ -2,14 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.alrmwhther">
 
-    <!-- Required to access the internet -->
+    <!-- Required permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <!-- Required to access location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <!-- Required for notifications -->
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -18,7 +14,8 @@
         android:label="weather_app"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
-        <!-- Your activity configurations -->
+
+        <!-- Your main activity configuration -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -35,10 +32,25 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Required for Flutter embedding -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Receiver for handling BOOT_COMPLETED to reschedule alarms -->
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
+
     <!-- Query for processing text -->
     <queries>
         <intent>

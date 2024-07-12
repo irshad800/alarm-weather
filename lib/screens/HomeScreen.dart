@@ -40,18 +40,34 @@ class _AlarmScreenState extends State<AlarmScreen> {
   @override
   Widget build(BuildContext context) {
     final alarmProvider = Provider.of<AlarmProvider>(context);
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final screenWidth = mediaQuery.size.width;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Center(
           child: Text(
-            "alarm",
+            "Alarm",
             style: TextStyle(color: Colors.white),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _getCurrentLocation();
+            },
+          ),
+        ],
       ),
       body: Container(
+        height: screenHeight,
+        width: screenWidth,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.black, Colors.green],
@@ -79,7 +95,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(screenWidth * 0.04),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -91,27 +107,28 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                           Icon(
                                             Icons.location_on,
                                             color: Colors.white,
+                                            size: screenWidth * 0.08,
                                           ),
                                           Text(
                                             '${snapshot.data!.name}',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 24,
+                                              fontSize: screenWidth * 0.06,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ],
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15),
+                                        padding: EdgeInsets.only(
+                                            left: screenWidth * 0.04),
                                         child: Stack(
                                           children: [
                                             Text(
                                               '${((snapshot.data!.main?.temp)! - 273.15).toStringAsFixed(0)}°c',
                                               style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 50,
+                                                fontSize: screenWidth * 0.13,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -119,13 +136,13 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15.0),
+                                        padding: EdgeInsets.only(
+                                            left: screenWidth * 0.04),
                                         child: Text(
                                           '${snapshot.data?.weather?[0].main.toString()}',
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 24,
+                                            fontSize: screenWidth * 0.06,
                                           ),
                                         ),
                                       ),
@@ -143,9 +160,10 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 : SizedBox.shrink(),
             Expanded(
               child: Container(
+                width: screenWidth,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
+                    top: Radius.circular(screenWidth * 0.05),
                   ),
                 ),
                 child: Consumer<AlarmProvider>(
@@ -158,13 +176,15 @@ class _AlarmScreenState extends State<AlarmScreen> {
 
                       return Card(
                         color: Colors.white.withOpacity(0.8),
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                        margin: EdgeInsets.symmetric(
+                          vertical: screenHeight * 0.01,
+                          horizontal: screenWidth * 0.04,
+                        ),
                         child: ListTile(
                           title: Text(
                             formattedTime,
-                            style: const TextStyle(
-                              fontSize: 24,
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.06,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -182,14 +202,15 @@ class _AlarmScreenState extends State<AlarmScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(screenWidth * 0.02),
               child: CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
-                radius: 30,
+                radius: screenWidth * 0.08,
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.add,
                     color: Colors.black,
+                    size: screenWidth * 0.08,
                   ),
                   onPressed: () async {
                     TimeOfDay? pickedTime = await showTimePicker(
@@ -216,16 +237,18 @@ class _AlarmScreenState extends State<AlarmScreen> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.red.withOpacity(0.8),
-                textStyle: const TextStyle(fontSize: 18),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                textStyle: TextStyle(fontSize: screenWidth * 0.05),
+                padding: EdgeInsets.symmetric(
+                  vertical: screenHeight * 0.02,
+                  horizontal: screenWidth * 0.06,
+                ),
               ),
               onPressed: () {
                 alarmProvider.stopAllAlarms();
               },
-              child: const Text('Stop All Alarms'),
+              child: Text('Stop All Alarms'),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: screenHeight * 0.02),
           ],
         ),
       ),
