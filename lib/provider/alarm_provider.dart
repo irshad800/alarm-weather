@@ -76,7 +76,7 @@ class AlarmProvider extends ChangeNotifier {
     final alarmSettings = AlarmSettings(
       id: alarmId,
       dateTime: dateTime,
-      assetAudioPath: 'assets/Tic-Tac-Mechanical-Alarm-Clock-2-chosic.com_.mp3',
+      assetAudioPath: 'assets/mixkit-retro-game-emergency-alarm-1000.wav',
       loopAudio: true,
       vibrate: true,
       volume: 0.8,

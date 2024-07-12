@@ -43,9 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
     AlarmScreen(),
-    Center(child: Text('Clock Page')),
-    Center(child: Text('Stopwatch Page')),
-    Center(child: Text('Countdown Timer Page')),
+    Center(
+        child: Text(
+      'Clock Page',
+      style: TextStyle(color: Colors.black),
+    )),
+    Center(
+        child: Text('Stopwatch Page', style: TextStyle(color: Colors.black))),
+    Center(
+        child: Text('Countdown Timer Page',
+            style: TextStyle(color: Colors.black))),
   ];
 
   @override
@@ -73,30 +80,26 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.access_alarm,
-              color: Colors.black,
-            ),
-            label: 'Alarm',
-          ),
+              icon: Icon(
+                Icons.access_alarm,
+              ),
+              label: 'Alarm',
+              backgroundColor: Colors.black),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.access_time,
-              color: Colors.black,
             ),
             label: 'Clock',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.av_timer,
-              color: Colors.black,
             ),
             label: 'Stopwatch',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.timer_rounded,
-              color: Colors.black,
             ),
             label: 'Countdown Timer',
           ),
